@@ -24,13 +24,11 @@ HooksSystem::HooksSystem() {
         throw std::exception("Cannot initialize symbol loader");
     }
     
-    HANDLE moduleHandle = GetModuleHandleA("..\\Hades2.exe");
+    m_GameMainHandle = GetModuleHandleA("..\\Hades2.exe");
 
-    if (!m_symLoader.LoadModuleSymbols(moduleHandle, "..\\Hades2.exe")) {
+    if (!m_symLoader.LoadModuleSymbols(m_GameMainHandle, "..\\Hades2.exe")) {
         throw std::exception("Cannot load Hades2.exe symbols");
     }
-
-    auto find = m_symLoader.GetSymbolAddress("lua_pcallk");
 
     Hooks::LoadBufferHook::Install(m_symLoader, m_symLoader.GetSymbolAddress("luaL_loadbufferx"), [](const char *fileName) {
         if (LuaLoadCb && std::string_view(fileName) == "Main") {

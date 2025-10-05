@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(HadesModLoader VERSION 1.2 LANGUAGES CXX)
+project(HadesModLoader VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -12,6 +12,8 @@ if(MSVC)
 endif()
 
 add_subdirectory(libs/lua-5.2.2)
+
+add_definitions(-DHADES2_MOD_LOADER -DNOMINMAX)
 
 set(MOD_LOADER_INSTALL_LIST HadesModNativeExtension)
 

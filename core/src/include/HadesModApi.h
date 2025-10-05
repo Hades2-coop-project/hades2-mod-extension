@@ -5,7 +5,7 @@
 
 #pragma once
 
-#ifndef HADES_MOD_LOADER
+#ifndef HADES2_MOD_LOADER
 #define HADES_MOD_API __declspec(dllexport)
 #endif
 
@@ -23,7 +23,7 @@ struct IModApi {
 
     uint64_t version;
     eGameVariant gameVariant;
-    GetGameDll_t GetGameDll;
+    GetGameDll_t GetGameHandle;
     GetSymbolAddress_t GetSymbolAddress;
     LoadDllSymbolds_t LoadDllSymbols;
 };

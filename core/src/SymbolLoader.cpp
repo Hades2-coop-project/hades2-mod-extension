@@ -20,7 +20,7 @@ bool SymbolLoader::Initialize() {
     SymLoadModuleEx = (decltype(SymLoadModuleEx))GetProcAddress(dbgHelper, "SymLoadModuleEx");
 
     SymSetOptions(SYMOPT_DEFERRED_LOADS);
-    return SymInitialize(GetCurrentProcess(), nullptr, FALSE) != 0;
+    return SymInitialize(GetCurrentProcess(), "../", FALSE) != 0;
 }
 
 uintptr_t SymbolLoader::GetSymbolAddress(const char *name) const noexcept {
