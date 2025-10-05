@@ -16,7 +16,7 @@
 
 namespace fs = std::filesystem;
 
-const static fs::path gamePath = fs::current_path().parent_path();
+const static fs::path gamePath = fs::current_path().parent_path().parent_path();
 
 void LuaManager::Reinit() {
     lua_State *luaState = GetLuaState();
