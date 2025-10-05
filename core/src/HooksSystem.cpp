@@ -11,39 +11,41 @@
 #include "hooks/LoadBufferHook.h"
 #include "hooks/LocalizationHook.h"
 
-static HooksSystem *gHooksInstance;
+#include <HookTable.h>
+
+static HooksSystem* gHooksInstance;
 
 std::function<void()> HooksSystem::LuaLoadCb{};
 
 HooksSystem::HooksSystem() {
     gModApi.gameVariant = eGameVariant::STEAM;
 
-    m_GameMainHandle = LoadLibraryA("Hades2.exe");
+    if (!m_symLoader.Initialize()) {
+        throw std::exception("Cannot initialize symbol loader");
+    }
+    
+    HANDLE moduleHandle = GetModuleHandleA("..\\Hades2.exe");
 
-    m_symLoader.Initialize();
-    m_symLoader.LoadModuleSymbols(m_GameMainHandle, "Hades2.exe");
+    if (!m_symLoader.LoadModuleSymbols(moduleHandle, "..\\Hades2.exe")) {
+        throw std::exception("Cannot load Hades2.exe symbols");
+    }
 
-    InitHookTable();
+    auto find = m_symLoader.GetSymbolAddress("lua_pcallk");
 
-    Hooks::LoadBufferHook::Install(m_symLoader, m_HookTable.luaL_loadbufferx, [](const wchar_t *fileName) {
-        if (LuaLoadCb && std::wstring_view(fileName).ends_with(L"Content\\Scripts\\Main.lua")) {
+    Hooks::LoadBufferHook::Install(m_symLoader, m_symLoader.GetSymbolAddress("luaL_loadbufferx"), [](const char *fileName) {
+        if (LuaLoadCb && std::string_view(fileName) == "Main") {
             LuaLoadCb();
         }
     });
 
-    Hooks::LocalizationHook::Install(m_symLoader);
-}
-
-void HooksSystem::InitHookTable() {
-    m_HookTable.luaState = m_symLoader.GetSymbolAddress("sgg::ScriptManager::LUA_INTERFACE");
-    m_HookTable.lua_pcallk = m_symLoader.GetSymbolAddress("lua_pcallk");
-    m_HookTable.luaL_loadbufferx = m_symLoader.GetSymbolAddress("luaL_loadbufferx");
-    m_HookTable.HandleAssert = m_symLoader.GetSymbolAddress("sgg__HandleAssert");
+    //Hooks::LocalizationHook::Install(m_symLoader);
 }
 
 HooksSystem *HooksSystem::Instance() {
-    if (!gHooksInstance)
+    if (!gHooksInstance) {
         gHooksInstance = new HooksSystem();
+        HookTable::Instance().Init([](const char *path) { return gHooksInstance->m_symLoader.GetSymbolAddress(path); });
+    }
 
     return gHooksInstance;
 }

@@ -7,7 +7,7 @@
 #include <windows.h>
 #include "ModManager.h"
 
-BOOL APIENTRY DllMain(HMODULE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
+static BOOL APIENTRY DllMain(HMODULE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
     switch (fdwReason) {
     case DLL_PROCESS_ATTACH: {
         ModManager::Instance()->Init();

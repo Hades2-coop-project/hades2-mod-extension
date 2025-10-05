@@ -37,7 +37,7 @@ static void Path(void* pos) {
 // And returns the first argument position
 static void *SearchPathPos(SymbolLoader &symLoader, uintptr_t luaL_loadbufferxPos) {
     // This is lenght of the sgg::ScriptManager::Load function
-    constexpr uint64_t searchSize = 0x6D0;
+    constexpr uint64_t searchSize = 0x85E;
     constexpr uint8_t CALL_BYTE = 0xE8;
     constexpr uint8_t FIRST_ARGUMENT_OFFSET = 7;
 
@@ -64,6 +64,9 @@ void Hooks::LoadBufferHook::Install(SymbolLoader &symLoader, uintptr_t luaL_load
                                     std::function<void(const char *)> handler) {
     hookKandler = handler;
     auto pos = SearchPathPos(symLoader, luaL_loadbufferxPos);
-    if (pos)
+    if (pos) {
         Path(pos);
+    } else {
+        throw std::exception("LoadBufferHook is not installed");
+    }
 }

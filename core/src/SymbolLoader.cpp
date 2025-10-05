@@ -35,8 +35,7 @@ uintptr_t SymbolLoader::GetSymbolAddress(const char *name) const noexcept {
 }
 
 bool SymbolLoader::LoadModuleSymbols(HANDLE handle, const char *moduleName) {
-    HANDLE proc = GetCurrentProcess();
-    return SymLoadModuleEx(proc, NULL, moduleName, NULL, (DWORD64)handle, 0, NULL, 0) != 0;
+    return SymLoadModuleEx(GetCurrentProcess(), NULL, moduleName, NULL, (DWORD64)handle, 0, NULL, 0) != 0;
 }
 
 void SymbolLoader::Cleanup() { SymCleanup(GetCurrentProcess()); }

@@ -11,7 +11,7 @@
 #include "HooksSystem.h"
 #include "LuaManager.h"
 #include "lua.hpp"
-#include "../Assert.h"
+#include <hades2/Assert.h>
 
 namespace fs = std::filesystem;
 
@@ -56,7 +56,7 @@ int ModRequire(lua_State *L) {
 
     if (runStatus != LUA_OK) {
         const char *message = lua_tostring(L, -1);
-        Assert::Handle("Error loading module", message, source, debugInfo.currentline);
+        sgg::HandleAssert("Error loading module", message, source, debugInfo.currentline, source);
         return 0;
     }
 

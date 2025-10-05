@@ -20,6 +20,8 @@ add_subdirectory(launcher)
 list(APPEND MOD_LOADER_INSTALL_LIST HadesModdedLauncher)
 endif()
 
+add_subdirectory(libs/hades2-engine-interface)
+
 add_subdirectory(core)
 
 install(TARGETS ${MOD_LOADER_INSTALL_LIST}

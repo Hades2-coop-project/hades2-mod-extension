@@ -5,25 +5,21 @@
 
 #pragma once
 
-#include "HookTable.h"
 #include <functional>
 #include "SymbolLoader.h"
 
 class HooksSystem {
   public:
     void SetLuaLoadCallback(std::function<void()> callback) { LuaLoadCb = callback; };
-    const HookTable &GetHoohTable() const noexcept { return m_HookTable; };
     void *GetGameDllHandle() const noexcept { return m_GameMainHandle; };
     SymbolLoader &GetSymbolLoader() { return m_symLoader; };
     static HooksSystem *Instance();
 
   private:
     HooksSystem();
-    void InitHookTable();
 
   private:
     static std::function<void()> LuaLoadCb;
-    HookTable m_HookTable{};
     HANDLE m_GameMainHandle{};
     SymbolLoader m_symLoader{};
 };

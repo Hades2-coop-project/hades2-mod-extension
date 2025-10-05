@@ -8,3 +8,4 @@
 #include <cstdint>
 #include <string>
 #include <windows.h>
+#include <memory>

@@ -9,7 +9,7 @@
 #define HADES_MOD_API __declspec(dllexport)
 #endif
 
-#define MOD_API_VERSION 2
+#define MOD_API_VERSION 1
 
 enum class eGameVariant: uint8_t {
     UNKNOWN,

@@ -11,6 +11,7 @@
 #include <fstream>
 #include <filesystem>
 
+#include <HookTable.h>
 #include <lua.hpp>
 
 namespace fs = std::filesystem;
@@ -49,16 +50,12 @@ bool LuaManager::LoadScriptFile(const std::filesystem::path &path) {
 }
 
 int LuaManager::lua_pcallk(lua_State *L, int nargs, int nresults, int errfunc, int ctx, lua_CFunction k) {
-    return ((int64_t(__fastcall *)(lua_State *, int, int, int, int, lua_CFunction))HooksSystem::Instance()->GetHoohTable().lua_pcallk)(L, nargs, nresults, errfunc, ctx, k);
+    return ((int64_t(__fastcall *)(lua_State *, int, int, int, int, lua_CFunction))HookTable::Instance().lua_pcallk)(L, nargs, nresults, errfunc, ctx, k);
 }
 
 int LuaManager::luaL_loadbufferx(lua_State *L, const char *buffer, size_t size, const char *name, const char *mode) {
-    return (
-        (int64_t(__fastcall *)(lua_State *, const char *, size_t, const char *, const char *))HooksSystem::Instance()
-            ->GetHoohTable()
+    return ((int64_t(__fastcall *)(lua_State *, const char *, size_t, const char *, const char *))HookTable::Instance()
             .luaL_loadbufferx)(L, buffer, size, name, mode);
 }
 
-lua_State *LuaManager::GetLuaState() {
-    return *reinterpret_cast<lua_State **>(HooksSystem::Instance()->GetHoohTable().luaState);
-}
+lua_State *LuaManager::GetLuaState() { return *reinterpret_cast<lua_State **>(HookTable::Instance().luaState); }

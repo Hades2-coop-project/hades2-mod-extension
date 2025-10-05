@@ -38,7 +38,7 @@ void ModManager::ScanMods() {
     namespace fs = std::filesystem;
     using path = fs::path;
 
-    auto gamePath = fs::current_path().parent_path();
+    auto gamePath = fs::current_path().parent_path().parent_path();
     auto modPath = gamePath / "Content" / "Mods";
 
     if (!fs::is_directory(modPath)) {
