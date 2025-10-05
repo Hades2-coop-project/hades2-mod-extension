@@ -5,6 +5,7 @@
 
 #include "include/HadesModApi.h"
 #include "HooksSystem.h"
+#include "HookTable.h"
 
 static void *GetGameHandle() { return HooksSystem::Instance()->GetGameDllHandle(); }
 
@@ -16,8 +17,12 @@ static bool LoadDllSymbols(void *handle, const char *dllName) {
     return HooksSystem::Instance()->GetSymbolLoader().LoadModuleSymbols(handle, dllName);
 }
 
+static HookTable* GetHookTable() {
+    return &HookTable::Instance(); }
+
 IModApi gModApi{.version{MOD_API_VERSION},
                 .gameVariant{eGameVariant::UNKNOWN},
                 .GetGameHandle = GetGameHandle,
                 .GetSymbolAddress = GetSymbolAddress,
-                .LoadDllSymbols = LoadDllSymbols};
+                .LoadDllSymbols = LoadDllSymbols,
+                .GetHookTable = GetHookTable};

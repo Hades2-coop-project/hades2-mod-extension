@@ -11,6 +11,8 @@
 
 #define MOD_API_VERSION 1
 
+class HookTable;
+
 enum class eGameVariant: uint8_t {
     UNKNOWN,
     STEAM,
@@ -20,12 +22,14 @@ struct IModApi {
     using GetGameDll_t = void*(__cdecl*)();
     using GetSymbolAddress_t = uint64_t(__cdecl*)(const char* symbolName);
     using LoadDllSymbolds_t = bool(__cdecl*)(void* handle, const char* dllName);
+    using GetHookTable_t =  HookTable* (__cdecl*)();
 
     uint64_t version;
     eGameVariant gameVariant;
     GetGameDll_t GetGameHandle;
     GetSymbolAddress_t GetSymbolAddress;
     LoadDllSymbolds_t LoadDllSymbols;
+    GetHookTable_t GetHookTable;
 };
 
 #ifdef HADES_MOD_API
