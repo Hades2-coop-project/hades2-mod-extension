@@ -15,8 +15,8 @@
 static ModManager gModCore{}; 
 
 void ModManager::Init() {
-    ScanMods();
     HooksSystem::Instance()->SetLuaLoadCallback([this]() { this->OnLuaCreated(); });
+    ScanMods();
 }
 
 void ModManager::Deinit() {
