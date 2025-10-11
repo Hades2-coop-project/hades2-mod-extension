@@ -40,8 +40,14 @@ static void *SearchPathPos(SymbolLoader &symLoader, uintptr_t luaL_loadbufferxPo
     constexpr uint64_t searchSize = 0x85E;
     constexpr uint8_t CALL_BYTE = 0xE8;
     constexpr uint8_t FIRST_ARGUMENT_OFFSET = 7;
+    // We have Lua::DoBytes in the debug version, and "sgg::ScriptManager::Load in the release
+    uintptr_t searchPos = symLoader.GetSymbolAddress("?DoBytes@Lua@@QEAAHPEBE_KPEBD@Z");
 
-    uintptr_t searchPos = symLoader.GetSymbolAddress("sgg::ScriptManager::Load");
+    if (searchPos)
+        return reinterpret_cast<void*>(searchPos + 0x64 - FIRST_ARGUMENT_OFFSET);
+    
+    searchPos = symLoader.GetSymbolAddress("sgg::ScriptManager::Load");
+
     if (!searchPos)
         return nullptr;
 
