@@ -10,7 +10,7 @@
 #include "LuaManager.h"
 #include "Mem.h"
 
-static std::function<void(const char *)> hookKandler = nullptr;
+static std::function<void(const char *)> hookHandler = nullptr;
 
 static uint64_t __fastcall loadBufferHook(void *rdx, const char *buffer, size_t size, const char *name,
                                           const char *mode) {
@@ -18,7 +18,7 @@ static uint64_t __fastcall loadBufferHook(void *rdx, const char *buffer, size_t 
     newName = newName + name + ".lua";
 
     // TODO move all to this
-    hookKandler(name);
+    hookHandler(name);
 
     return LuaManager::luaL_loadbufferx(LuaManager::GetLuaState(), buffer, size, newName.c_str(), mode);
 }
@@ -68,7 +68,7 @@ static void *SearchPathPos(SymbolLoader &symLoader, uintptr_t luaL_loadbufferxPo
 
 void Hooks::LoadBufferHook::Install(SymbolLoader &symLoader, uintptr_t luaL_loadbufferxPos,
                                     std::function<void(const char *)> handler) {
-    hookKandler = handler;
+    hookHandler = handler;
     auto pos = SearchPathPos(symLoader, luaL_loadbufferxPos);
     if (pos) {
         Path(pos);
