@@ -73,7 +73,7 @@ int ModRequire(lua_State *L) {
     bool fileLoadStatus = LuaManager::LoadScriptFile(fs::current_path().parent_path() / scriptPath);
 
     if (!fileLoadStatus)
-        return luaL_error(L, "Cannot load file");
+        return luaL_error(L, "Cannot load file: %s", scriptPath.string().c_str());
 
     int runStatus = LuaManager::lua_pcallk(L, 0, 2, 0, 0, 0);
 
