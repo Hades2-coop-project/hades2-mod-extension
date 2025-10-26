@@ -15,6 +15,31 @@
 
 namespace fs = std::filesystem;
 
+fs::path getRequiredScriptPath(const char* source, const char* scriptRelativePath) {
+    fs::path scriptPath{};
+    if (scriptRelativePath[0] == '@' && scriptRelativePath[1] == '/') {
+        // The path is relative to the mod folder
+        std::string_view modPathView{source};
+        auto modFolderEnd = modPathView.find('\\', sizeof("Content\\Mods\\"));
+
+        if (modFolderEnd == std::string_view::npos) {
+            // Invalid mod path, return as is
+            return scriptPath;
+        }
+
+        scriptPath = modPathView.substr(0, modFolderEnd);
+        scriptPath /= &scriptRelativePath[2];
+    } else if (scriptRelativePath[0] == ':' && scriptRelativePath[1] == '/') {
+        // Relative to the all mods folder
+        scriptPath = "Content\\Mods\\";
+        scriptPath /= &scriptRelativePath[2];
+    } else {
+        scriptPath = source;
+        scriptPath = scriptPath.parent_path() / scriptRelativePath;
+    }
+    return scriptPath;
+}
+
 int ModRequire(lua_State *L) {
     auto scriptRelativePath = luaL_checkstring(L, 1);
 
@@ -30,9 +55,7 @@ int ModRequire(lua_State *L) {
 
     source++; // skip @
 
-    fs::path scriptPath{source};
-    scriptPath = scriptPath.parent_path() / scriptRelativePath;
-
+    const fs::path scriptPath = getRequiredScriptPath(source, scriptRelativePath);
     auto relativePathAsString = (scriptPath.lexically_normal()).string();
 
     if (relativePathAsString.starts_with(".."))
