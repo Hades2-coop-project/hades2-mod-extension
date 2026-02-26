@@ -4,7 +4,7 @@
 //
 
 #include "Mod.h"
-#include "LuaManager.h"
+#include "lua/LuaManager.h"
 #include "ModApi.h"
 #include "ModMetaParser.h"
 #include <fstream>

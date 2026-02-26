@@ -63,7 +63,7 @@ static bool startSteamGame(const char* arguments) {
     si.cb = sizeof(si);
     ZeroMemory(&pi, sizeof(pi));
 
-    std::string cmdLine{"Hades2.exe /content=\"../\" /LiveCreateTextures=false /CheckNonExistingTextures=false"};
+    std::string cmdLine{"Hades2.exe /content=\"../\" /LiveCreateTextures=false /CheckNonExistingTextures=false "};
     cmdLine.append(arguments);
 
     if (!CreateProcess(nullptr,                   // No module name (use command line)
@@ -81,7 +81,7 @@ static bool startSteamGame(const char* arguments) {
         return false;
     }
 
-    InjectModDll(pi, "plugins/HadesModNativeExtension.dll");
+    InjectModDll(pi, "plugins\\HadesModNativeExtension.dll");
 
     // Resume the main thread
     ResumeThread(pi.hThread);

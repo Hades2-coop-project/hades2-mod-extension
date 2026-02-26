@@ -6,10 +6,16 @@
 #include "pch.h"
 #include <windows.h>
 #include "ModManager.h"
+#include "hud/HookedMenuScreen.h"
+#include "LibraryComponents.h"
+#include "HooksSystem.h"
 
 static BOOL APIENTRY DllMain(HMODULE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
     switch (fdwReason) {
     case DLL_PROCESS_ATTACH: {
+        HooksSystem::Instance();
+        HookedMenuScreen::VTBL.Initialize();
+        LibraryComponents::Initialize();
         ModManager::Instance()->Init();
         break;
     }

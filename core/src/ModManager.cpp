@@ -9,8 +9,9 @@
 #include "ModManager.h"
 #include "HooksSystem.h"
 #include "lua/ModLuaDefs.h"
-#include "LuaManager.h"
+#include "lua/LuaManager.h"
 #include "hooks/LocalizationHook.h"
+#include "GamemodeManager.h"
 
 static ModManager gModCore{}; 
 
@@ -26,6 +27,9 @@ void ModManager::Deinit() {
 ModManager *ModManager::Instance() { return &gModCore; }
 
 void ModManager::OnLuaCreated() {
+    // Reset gamemode list and wait next MainMenuAPIAddGamemode
+    GamemodeManager::Instance().Reset();
+
     LuaManager::Reinit();
     auto luaState = LuaManager::GetLuaState();
 

@@ -8,6 +8,12 @@
 #include "HooksSystem.h"
 #include "lua/ModLuaDefs.h"
 #include "lua/TempValuesLuaDefs.h"
+#include "lua/defs/LuaGamemodeFunctionDefs.h"
+#include "lua/defs/LuaGUIComponentButtonFunctionDefs.h"
+#include "lua/defs/LuaGUIComponentFunctionDefs.h"
+#include "lua/defs/LuaGUIComponentTextBoxFunctionDefs.h"
+#include "lua/defs/LuaMainMenuScreenFunctionDefs.h"
+#include "lua/defs/LuaMenuScreenDefs.h"
 #include <fstream>
 #include <filesystem>
 
@@ -22,6 +28,12 @@ void LuaManager::Reinit() {
     lua_State *luaState = GetLuaState();
     ModLuaDefs::Load(luaState);
     TempValuesLuaDefs::Load(luaState);
+    LuaGamemodeFunctionDefs::Load(luaState);
+    //LuaGUIComponentButtonFunctionDefs::Load(luaState);
+    //LuaGUIComponentFunctionDefs::Load(luaState);
+    //LuaGUIComponentTextBoxFunctionDefs::Load(luaState);
+    //LuaMainMenuScreenFunctionDefs::Load(luaState);
+    //LuaMenuScreenFunctionDefs::Load(luaState);
 }
 
 bool LuaManager::DoScriptFile(const std::filesystem::path &path) {

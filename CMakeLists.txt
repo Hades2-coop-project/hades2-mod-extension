@@ -13,6 +13,10 @@ endif()
 
 add_definitions(-DHADES2_MOD_LOADER -DNOMINMAX)
 
+add_definitions(-DEASTL_EASTDC_VSNPRINTF=0)
+add_definitions(-DEASTL_DEBUG=0)
+add_definitions(-DEASTL_CUSTOM_FLOAT_CONSTANTS_REQUIRED)
+
 add_subdirectory(libs/lua-5.2.2)
 add_subdirectory(libs/hades2-engine-interface)
 add_subdirectory(core)

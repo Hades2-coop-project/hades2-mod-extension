@@ -7,7 +7,7 @@
 
 #include "LoadBufferHook.h"
 
-#include "LuaManager.h"
+#include "lua/LuaManager.h"
 #include "Mem.h"
 
 static std::function<void(const char *)> hookHandler = nullptr;
@@ -68,6 +68,10 @@ static void *SearchPathPos(SymbolLoader &symLoader, uintptr_t luaL_loadbufferxPo
 
 void Hooks::LoadBufferHook::Install(SymbolLoader &symLoader, uintptr_t luaL_loadbufferxPos,
                                     std::function<void(const char *)> handler) {
+    if (!luaL_loadbufferxPos) {
+        throw std::exception("Missing luaL_loadbufferxPos address");
+    }
+    
     hookHandler = handler;
     auto pos = SearchPathPos(symLoader, luaL_loadbufferxPos);
     if (pos) {
