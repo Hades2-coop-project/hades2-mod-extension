@@ -29,11 +29,11 @@ void LuaManager::Reinit() {
     ModLuaDefs::Load(luaState);
     TempValuesLuaDefs::Load(luaState);
     LuaGamemodeFunctionDefs::Load(luaState);
-    //LuaGUIComponentButtonFunctionDefs::Load(luaState);
-    //LuaGUIComponentFunctionDefs::Load(luaState);
-    //LuaGUIComponentTextBoxFunctionDefs::Load(luaState);
-    //LuaMainMenuScreenFunctionDefs::Load(luaState);
-    //LuaMenuScreenFunctionDefs::Load(luaState);
+    LuaGUIComponentFunctionDefs::Load(luaState);
+    LuaGUIComponentButtonFunctionDefs::Load(luaState);
+    LuaGUIComponentTextBoxFunctionDefs::Load(luaState);
+    LuaMainMenuScreenFunctionDefs::Load(luaState);
+    LuaMenuScreenFunctionDefs::Load(luaState);
 }
 
 bool LuaManager::DoScriptFile(const std::filesystem::path &path) {
