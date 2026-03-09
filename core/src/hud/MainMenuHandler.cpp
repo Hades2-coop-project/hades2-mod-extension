@@ -45,8 +45,7 @@ void MainMenuHandler::InitializeCustomButtons() {
     gamemodeBtn->SetTextColor(0xFFCCCCCC);
     gamemodeBtn->SetFadeOpacity(0.0f);
     gamemodeBtn->SetFadeTarget(1.0f);
-    gamemodeBtn->SetFadeDelay(1.05f);
-    gamemodeBtn->SetText("Gamemode");
+    gamemodeBtn->SetFadeDelay(1.60f);
 
     auto &clickHandler = gamemodeBtn->GetActivateAction();
     clickHandler.AddCallBack([this]() {
