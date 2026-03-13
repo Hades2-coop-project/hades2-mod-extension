@@ -36,7 +36,7 @@ HooksSystem::HooksSystem() {
         }
     });
 
-    //Hooks::LocalizationHook::Install(m_symLoader);
+    Hooks::LocalizationHook::Install(m_symLoader);
 }
 
 HooksSystem *HooksSystem::Instance() {

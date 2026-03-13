@@ -7,47 +7,45 @@
 
 #include "FunctionHook.h"
 #include "LocalizationHook.h"
+#include <hades2/HashGuid.h>
+#include <hades2/ResourceDirectoryInfo.h>
+#include <EASTL-forge1.51/string.h>
 
 static std::vector<std::string> localizations{};
 
 static FunctionHook<"sgg::GameDataManager::ReadTextData", void> hook;
 
-using ReadTextData_params_t = void(__fastcall *)(const char *filePath, void *textStorage, void *localization);
+using ReadTextData_params_t = void(__fastcall *)(const char *filePath, void *textStorage, eastl::string *localization);
 static ReadTextData_params_t ReadTextData{};
 
 using fsSetPathForResourceDir_t = void(__fastcall *)(void *pIO, int mount, int id, const char *path);
 static fsSetPathForResourceDir_t fsSetPathForResourceDir{};
 
-static void *TEXT_DATA{};
-static void *UiLang{};
+static void *sTextData{};
+static sgg::HashGuid *Lang{};
 
-struct ResourceDirectoryInfo {
-    void *pIO;
-    char path[512];
-    bool bundled;
-};
-static ResourceDirectoryInfo *pTextResourcePath{};
+static sgg::ResourceDirectoryInfo *pTextResourcePath{};
 
-constexpr int MOUNT_NONE = 0x0;
+constexpr int RM_CONTENT = 0x0;
 constexpr int TEXT_RESOPURCES = 0x1C;
 
-void setTextDataPath(const char *path) {
+static void setTextDataPath(const char *path) {
     // Invalidate string
     pTextResourcePath->path[0] = 0;
-    fsSetPathForResourceDir(pTextResourcePath->pIO, MOUNT_NONE, TEXT_RESOPURCES, path);
+    fsSetPathForResourceDir(pTextResourcePath->pIO, RM_CONTENT, TEXT_RESOPURCES, path);
 }
 
 void Hooks::LocalizationHook::Install(SymbolLoader &symLoader) {
-    hook.Install(reinterpret_cast<void *>(symLoader.GetSymbolAddress("sgg::GameDataManager::ReadTextData")), 12);
+    hook.Install(reinterpret_cast<void *>(symLoader.GetSymbolAddress("?ReadTextData@GameDataManager@sgg@@SAXXZ")), 16);
 
     ReadTextData = reinterpret_cast<ReadTextData_params_t>(symLoader.GetSymbolAddress(
         "?ReadTextData@GameDataManager@sgg@@SAXPEBDAEAV?$string_hash_map@PEAVTextData@sgg@@U?$hash@PEBD@eastl@@U?$str_"
         "equal_to@PEBD@4@Vallocator_forge@4@@eastl@@AEBV?$basic_string@DVallocator_forge@eastl@@@4@@Z"));
 
-    TEXT_DATA = reinterpret_cast<void *>(symLoader.GetSymbolAddress("sgg::GameDataManager::TEXT_DATA"));
-    UiLang = reinterpret_cast<void *>(symLoader.GetSymbolAddress("sgg::Localization::UiLang"));
-    pTextResourcePath = reinterpret_cast<ResourceDirectoryInfo *>(symLoader.GetSymbolAddress("gResourceDirectories") +
-                                                                  TEXT_RESOPURCES * sizeof(ResourceDirectoryInfo));
+    sTextData = reinterpret_cast<void *>(symLoader.GetSymbolAddress("sgg::GameDataManager::sTextData"));
+    Lang = reinterpret_cast<sgg::HashGuid *>(symLoader.GetSymbolAddress("sgg::Localization::Lang"));
+    pTextResourcePath = reinterpret_cast<sgg::ResourceDirectoryInfo *>(
+        symLoader.GetSymbolAddress("gResourceDirectories") + TEXT_RESOPURCES * sizeof(sgg::ResourceDirectoryInfo));
 
     fsSetPathForResourceDir =
         reinterpret_cast<fsSetPathForResourceDir_t>(symLoader.GetSymbolAddress("fsSetPathForResourceDir"));
@@ -55,7 +53,8 @@ void Hooks::LocalizationHook::Install(SymbolLoader &symLoader) {
     hook.onPostFunction = []() {
         setTextDataPath("../Content/Mods");
         for (const auto &path : localizations) {
-            ReadTextData(path.c_str(), TEXT_DATA, UiLang);
+            eastl::string langStr{Lang->c_str()};
+            ReadTextData(path.c_str(), sTextData, &langStr);
         }
 
         setTextDataPath("../Content/Game/Text");
