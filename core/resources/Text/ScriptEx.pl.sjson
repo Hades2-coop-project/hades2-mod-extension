@@ -1,0 +1,10 @@
+{
+  lang = "pl"
+  Texts =
+  [
+  	{
+      Id = "MainMenuAPI_SelectGamemode"
+      DisplayName = "Tryb gry"
+    }
+  ]
+}

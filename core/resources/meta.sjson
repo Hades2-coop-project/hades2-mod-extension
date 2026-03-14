@@ -1,0 +1,18 @@
+{	
+	Priority = 10001
+	Name = "Additional script API"
+	Author = "Uladzislau 'TheNormalnij' Nikalayevich"
+	Localization = [
+		"Text/ScriptEx.de.sjson"
+		"Text/ScriptEx.en.sjson"
+		"Text/ScriptEx.es.sjson"
+		"Text/ScriptEx.fr.sjson"
+		"Text/ScriptEx.it.sjson"
+		"Text/ScriptEx.ja.sjson"
+		"Text/ScriptEx.ko.sjson"
+		"Text/ScriptEx.pl.sjson"
+		"Text/ScriptEx.pt-BR.sjson"
+		"Text/ScriptEx.ru.sjson"
+		"Text/ScriptEx.zh-CN.sjson"
+	]
+}

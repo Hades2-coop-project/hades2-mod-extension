@@ -1,0 +1,10 @@
+{
+  lang = "fr"
+  Texts =
+  [
+  	{
+      Id = "MainMenuAPI_SelectGamemode"
+      DisplayName = "Mode de jeu"
+    }
+  ]
+}

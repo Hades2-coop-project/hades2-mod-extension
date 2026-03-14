@@ -1,0 +1,10 @@
+{
+  lang = "ko"
+  Texts =
+  [
+  	{
+      Id = "MainMenuAPI_SelectGamemode"
+      DisplayName = "게임 모드"
+    }
+  ]
+}

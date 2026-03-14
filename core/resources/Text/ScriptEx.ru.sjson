@@ -1,0 +1,10 @@
+{
+  lang = "ru"
+  Texts =
+  [
+  	{
+      Id = "MainMenuAPI_SelectGamemode"
+      DisplayName = "Режим игры"
+    }
+  ]
+}

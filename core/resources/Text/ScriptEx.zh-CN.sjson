@@ -1,0 +1,10 @@
+{
+  lang = "zh-CN"
+  Texts =
+  [
+  	{
+      Id = "MainMenuAPI_SelectGamemode"
+      DisplayName = "游戏模式"
+    }
+  ]
+}
