@@ -8,7 +8,7 @@
 #include "LuaGUIComponentFunctionDefs.h"
 #include "lua/classes/GuiComponentUserData.h"
 #include "lua/helpers/LuaCallback.h"
-#include "lua/LuaManager.h"
+#include <HookedLua.h>
 
 static int SetText(lua_State *L) {
     auto *wrapper = checkclass<GuiComponentUserData>(L, 1);
@@ -56,7 +56,7 @@ static int AddActivationHandler(lua_State *L) {
     LuaCallback cb{L, 2};
     wrapper->Get()->GetActivateAction().AddCallBack([cb, L]() {
         cb.PushFunction(L);
-        LuaManager::lua_pcallk(L, 0, 0, 0, 0, 0);
+        HookedLua::lua_pcallk(L, 0, 0, 0, 0, 0);
     });
 
     return 0;

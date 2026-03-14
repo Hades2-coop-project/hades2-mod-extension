@@ -9,6 +9,7 @@
 #include "ModManager.h"
 #include "HooksSystem.h"
 #include "lua/LuaManager.h"
+#include <HookedLua.h>
 #include "hooks/LocalizationHook.h"
 #include "GamemodeManager.h"
 
@@ -30,7 +31,7 @@ void ModManager::OnLuaCreated() {
     GamemodeManager::Instance().Reset();
 
     LuaManager::Reinit();
-    auto luaState = LuaManager::GetLuaState();
+    auto luaState = HookedLua::GetLuaState();
 
     for (auto &mod : m_Mods) {
         mod->OnLuaCreated(luaState);

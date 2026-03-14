@@ -7,11 +7,10 @@
 #include "ModLuaDefs.h"
 
 #include <filesystem>
-
-#include "HooksSystem.h"
 #include "lua/LuaManager.h"
 #include "lua.hpp"
 #include <hades2/Assert.h>
+#include <HookedLua.h>
 
 namespace fs = std::filesystem;
 
@@ -75,7 +74,7 @@ int ModRequire(lua_State *L) {
     if (!fileLoadStatus)
         return luaL_error(L, "Cannot load file: %s", scriptPath.string().c_str());
 
-    int runStatus = LuaManager::lua_pcallk(L, 0, 2, 0, 0, 0);
+    int runStatus = HookedLua::lua_pcallk(L, 0, 2, 0, 0, 0);
 
     if (runStatus != LUA_OK) {
         const char *message = lua_tostring(L, -1);

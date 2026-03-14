@@ -15,7 +15,4 @@ class LuaManager {
     static void Reinit();
     static bool DoScriptFile(const std::filesystem::path &path);
     static bool LoadScriptFile(const std::filesystem::path &path);
-    static int lua_pcallk(lua_State *L, int nargs, int nresults, int errfunc, int ctx, lua_CFunction k);
-    static int luaL_loadbufferx(lua_State *L, const char* buffer, size_t size, const char* name, const char* mode);
-    static lua_State *GetLuaState();
 };

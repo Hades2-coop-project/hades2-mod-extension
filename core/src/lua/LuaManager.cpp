@@ -18,13 +18,14 @@
 
 #include <HookTable.h>
 #include <lua.hpp>
+#include <hookedLua.h>
 
 namespace fs = std::filesystem;
 
 const static fs::path gamePath = fs::current_path().parent_path().parent_path();
 
 void LuaManager::Reinit() {
-    lua_State *luaState = GetLuaState();
+    lua_State *luaState = HookedLua::GetLuaState();
     ModLuaDefs::Load(luaState);
     TempValuesLuaDefs::Load(luaState);
     LuaGamemodeFunctionDefs::Load(luaState);
@@ -39,7 +40,7 @@ bool LuaManager::DoScriptFile(const std::filesystem::path &path) {
     if (!LoadScriptFile(path))
         return false;
 
-    return lua_pcallk(GetLuaState(), 0, 0, 0, 0, 0) == LUA_OK;
+    return HookedLua::lua_pcallk(HookedLua::GetLuaState(), 0, 0, 0, 0, 0) == LUA_OK;
 }
 
 bool LuaManager::LoadScriptFile(const std::filesystem::path &path) {
@@ -55,18 +56,7 @@ bool LuaManager::LoadScriptFile(const std::filesystem::path &path) {
 
     auto luaName = "@" + path.lexically_relative(gamePath).lexically_normal().string();
 
-    int fileLoadStatus = luaL_loadbufferx(GetLuaState(), buffer.data(), buffer.size(), luaName.c_str(), nullptr);
+    int fileLoadStatus = HookedLua::luaL_loadbufferx(HookedLua::GetLuaState(), buffer.data(), buffer.size(), luaName.c_str(), nullptr);
 
     return fileLoadStatus == LUA_OK;
 }
-
-int LuaManager::lua_pcallk(lua_State *L, int nargs, int nresults, int errfunc, int ctx, lua_CFunction k) {
-    return ((int64_t(__fastcall *)(lua_State *, int, int, int, int, lua_CFunction))HookTable::Instance().lua_pcallk)(L, nargs, nresults, errfunc, ctx, k);
-}
-
-int LuaManager::luaL_loadbufferx(lua_State *L, const char *buffer, size_t size, const char *name, const char *mode) {
-    return ((int64_t(__fastcall *)(lua_State *, const char *, size_t, const char *, const char *))HookTable::Instance()
-            .luaL_loadbufferx)(L, buffer, size, name, mode);
-}
-
-lua_State *LuaManager::GetLuaState() { return *reinterpret_cast<lua_State **>(HookTable::Instance().luaState); }

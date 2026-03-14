@@ -7,12 +7,12 @@
 
 #include "Gamemode.h"
 
+#include <HookedLua.h>
 #include <lua.hpp>
-#include "lua/LuaManager.h"
 
 void Gamemode::Activate() const {
-    lua_State *L = LuaManager::GetLuaState();
+    lua_State *L = HookedLua::GetLuaState();
     callback.PushFunction(L);
     lua_pushstring(L, name.c_str());
-    LuaManager::lua_pcallk(L, 1, 0, 0, 0, 0);
+    HookedLua::lua_pcallk(L, 1, 0, 0, 0, 0);
 }

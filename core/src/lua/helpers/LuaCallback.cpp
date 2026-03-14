@@ -7,19 +7,20 @@
 
 #include "lua/helpers/LuaCallback.h"
 #include <lua.hpp>
+#include <hookedLua.h>
 
-constexpr char const *szUniqueCallbackStorage = "_MainMenuAPICB";
+constexpr char const *szUniqueCallbackStorage = "_ScriptExAPICB";
 
 LuaCallback::LuaCallback(lua_State *L, int stackIndex) {
     // Ensure the callback storage table exists in the registry
-    luaL_getsubtable(L, LUA_REGISTRYINDEX, szUniqueCallbackStorage);
+    HookedLua::luaL_getsubtable(L, LUA_REGISTRYINDEX, szUniqueCallbackStorage);
 
     // Get the next available index in the callback storage table
     int nextIndex = lua_rawlen(L, -1) + 1;
 
     // Push the value at stackIndex onto the callback storage table
     lua_pushvalue(L, stackIndex);
-    lua_rawseti(L, -2, nextIndex);
+    HookedLua::lua_rawseti(L, -2, nextIndex);
 
     // Save the index for later use
     callbackIndex = nextIndex;
@@ -29,7 +30,7 @@ LuaCallback::LuaCallback(lua_State *L, int stackIndex) {
 }
 
 void LuaCallback::PushFunction(lua_State* L) const {
-    luaL_getsubtable(L, LUA_REGISTRYINDEX, szUniqueCallbackStorage);
+    HookedLua::luaL_getsubtable(L, LUA_REGISTRYINDEX, szUniqueCallbackStorage);
 
     lua_rawgeti(L, -1, callbackIndex);
 

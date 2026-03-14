@@ -7,7 +7,7 @@
 
 #include "LoadBufferHook.h"
 
-#include "lua/LuaManager.h"
+#include <HookedLua.h>
 #include "Mem.h"
 
 static std::function<void(const char *)> hookHandler = nullptr;
@@ -20,7 +20,7 @@ static uint64_t __fastcall loadBufferHook(void *rdx, const char *buffer, size_t 
     // TODO move all to this
     hookHandler(name);
 
-    return LuaManager::luaL_loadbufferx(LuaManager::GetLuaState(), buffer, size, newName.c_str(), mode);
+    return HookedLua::luaL_loadbufferx(HookedLua::GetLuaState(), buffer, size, newName.c_str(), mode);
 }
 
 static void Path(void* pos) {
