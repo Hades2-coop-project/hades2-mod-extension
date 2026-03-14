@@ -38,25 +38,24 @@ class HookedMenuScreen : public sgg::MenuScreen {
         bool(__fastcall *TryExitScreen)(HookedMenuScreen *self){};
         void(__fastcall *Scroll)(HookedMenuScreen *self, float, bool){};
 
-
         void Initialize();
-        void Initialize(const HookedMenuScreenVtbl* parent);
+        void Initialize(const HookedMenuScreenVtbl *parent);
     };
 
     friend HookedMenuScreenVtbl;
 
-    public:
+  public:
     void IheritedConstrictor(sgg::ScreenManager *screenManager) {
         GET_HOOK(MenuScreen_constructor_ScreenManager,
                  sgg::MenuScreen * (__fastcall *)(sgg::MenuScreen *, sgg::ScreenManager *))(this, screenManager);
         SetVTBL(&VTBL);
     };
 
-    protected:
-    void SetVTBL(HookedMenuScreenVtbl *vtbl) { *reinterpret_cast<HookedMenuScreenVtbl **>(this) = vtbl; }
-
     // Custom loader fixes issues with paths
     void LoadFromMod(const char *path);
+
+  protected:
+    void SetVTBL(HookedMenuScreenVtbl *vtbl) { *reinterpret_cast<HookedMenuScreenVtbl **>(this) = vtbl; }
 
   public:
     static HookedMenuScreenVtbl VTBL;

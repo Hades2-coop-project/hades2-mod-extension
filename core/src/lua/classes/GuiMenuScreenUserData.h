@@ -6,9 +6,9 @@
 #pragma once
 
 #include "lua/helpers/LuaClass.h"
-#include <hades2/MenuScreen.h>
+#include "hud/HookedMenuScreen.h"
 
-class GuiMenuScreenUserData : public LuaClassWrapper<sgg::MenuScreen> {
+class GuiMenuScreenUserData : public LuaClassWrapper<HookedMenuScreen> {
   public:
     using Parent = void;
     static constexpr const char *LuaClassMeta = "MainMenuApi.MenuScreen";

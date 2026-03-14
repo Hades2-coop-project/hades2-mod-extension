@@ -34,7 +34,7 @@ static int MenuScreenLoadDefenitions(lua_State* L) {
     }
 
     auto *menu = menuWrapper->Get();
-    menu->GetScreenData().ReadXml(menu, lua_tostring(L, 2));
+    menu->LoadFromMod(lua_tostring(L, 2));
 
     return 0;
 }
