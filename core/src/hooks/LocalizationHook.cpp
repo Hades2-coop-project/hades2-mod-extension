@@ -34,9 +34,11 @@ void Hooks::LocalizationHook::Install(SymbolLoader &symLoader) {
     hook.onPostFunction = []() {
         LibraryComponents::Instance()->GetContentSelecter().SetPath(sgg::fs::ResourceDirectory::CALCULATES_TEXT,
                                                                     "../Content/Mods");
+
+        const char *cStrLang = Lang->c_str();
+        eastl::string langStr{cStrLang};
         for (const auto &path : localizations) {
-            eastl::string langStr{Lang->c_str()};
-            ReadTextData(path.c_str(), sTextData, &langStr);
+            ReadTextData((path + "." + cStrLang + ".sjson").c_str(), sTextData, &langStr);
         }
 
         LibraryComponents::Instance()->GetContentSelecter().SetPath(sgg::fs::ResourceDirectory::CALCULATES_TEXT,
