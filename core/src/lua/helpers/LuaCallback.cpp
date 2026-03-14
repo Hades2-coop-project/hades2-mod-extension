@@ -10,28 +10,28 @@
 
 constexpr char const *szUniqueCallbackStorage = "_MainMenuAPICB";
 
-LuaCallback::LuaCallback(lua_State *lusState, int stackIndex) {
+LuaCallback::LuaCallback(lua_State *L, int stackIndex) {
     // Ensure the callback storage table exists in the registry
-    luaL_getsubtable(lusState, LUA_REGISTRYINDEX, szUniqueCallbackStorage);
+    luaL_getsubtable(L, LUA_REGISTRYINDEX, szUniqueCallbackStorage);
 
     // Get the next available index in the callback storage table
-    int nextIndex = lua_rawlen(lusState, -1) + 1;
+    int nextIndex = lua_rawlen(L, -1) + 1;
 
     // Push the value at stackIndex onto the callback storage table
-    lua_pushvalue(lusState, stackIndex);
-    lua_rawseti(lusState, -2, nextIndex);
+    lua_pushvalue(L, stackIndex);
+    lua_rawseti(L, -2, nextIndex);
 
     // Save the index for later use
     callbackIndex = nextIndex;
 
     // Remove the callback storage table from the stack
-    lua_pop(lusState, 1);
+    lua_pop(L, 1);
 }
 
-void LuaCallback::PushFunction(lua_State* lusState) const {
-    luaL_getsubtable(lusState, LUA_REGISTRYINDEX, szUniqueCallbackStorage);  
+void LuaCallback::PushFunction(lua_State* L) const {
+    luaL_getsubtable(L, LUA_REGISTRYINDEX, szUniqueCallbackStorage);
 
-    lua_rawgeti(lusState, -1, callbackIndex);  
+    lua_rawgeti(L, -1, callbackIndex);
 
-    lua_remove(lusState, -2);
+    lua_remove(L, -2);
 }
