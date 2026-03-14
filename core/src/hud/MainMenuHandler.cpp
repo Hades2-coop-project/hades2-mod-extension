@@ -11,8 +11,8 @@
 #include "HookedClassFactory.h"
 #include "GamemodeManager.h"
 
-MainMenuHandler::MainMenuHandler() : funHook{(void *)HookTable::Instance().MainMenuScreen_MainMenuScreen, 12 } {
-    funHook.Install();
+MainMenuHandler::MainMenuHandler() {
+    funHook.Install((void *)HookTable::Instance().MainMenuScreen_MainMenuScreen, 12);
     funHook.onPostFunction = [this](sgg::MainMenuScreen *menuScreen) {
         mainMenuScreen = menuScreen;
 
@@ -51,6 +51,7 @@ void MainMenuHandler::InitializeCustomButtons() {
     clickHandler.AddCallBack([this]() {
         auto *screenMamaner = this->mainMenuScreen->GetScreenManager();
         GamemodeScreen *gamemodeMenu = HookedClassFactory::Create<GamemodeScreen>(screenMamaner);
+        gamemodeMenu->SetAllowDuplicates(true);
         screenMamaner->AddScreen(gamemodeMenu);
     });
 }

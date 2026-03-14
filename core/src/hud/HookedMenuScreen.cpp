@@ -6,6 +6,7 @@
 #include "pch.h"
 
 #include "HookedMenuScreen.h"
+#include "LibraryComponents.h"
 
 HookedMenuScreen::HookedMenuScreenVtbl HookedMenuScreen::VTBL{
     //
@@ -35,4 +36,16 @@ void HookedMenuScreen::HookedMenuScreenVtbl::Initialize(const HookedMenuScreenVt
         if (!thisAsVtbl[i])
             thisAsVtbl[i] = parentAsUintptr[i];
     }
+}
+
+void HookedMenuScreen::LoadFromMod(const char *path) {
+    if (this->mLoadDefaultComponents)
+        mData.ReadXml(this, "GUI/MenuScreen.sjson");
+
+    LibraryComponents::Instance()->GetContentSelecter().SetPath(sgg::fs::ResourceDirectory::RD_MIDDLEWARE_1,
+                                                                "../Content/Mods");
+    mData.ReadXml(this, path);
+
+    LibraryComponents::Instance()->GetContentSelecter().SetPath(sgg::fs::ResourceDirectory::RD_MIDDLEWARE_1,
+                                                                "../Content/Game");
 }

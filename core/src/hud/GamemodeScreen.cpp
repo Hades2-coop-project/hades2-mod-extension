@@ -32,9 +32,11 @@ void GamemodeScreen::CreateComponents() {
     auto *buttonTemplate = HookedClassFactory::Create<sgg::GUIComponentButton, sgg::MenuScreen *>(this);
     buttonTemplate->SetParent(this);
     AddComponent(buttonTemplate);
-    GetReflectionHelper().ReflectComponent("mSettingsButton", buttonTemplate);
+    GetReflectionHelper().ReflectComponent("mButtonTemplate", buttonTemplate);
 
-    Load("GUI/SettingsMenuScreen.sjson");
+    LoadFromMod("TN_Core/GamemodeScreen.sjson");
+    
+    //Load("GUI/PauseScreen.sjson");
     buttonTemplate->SetLocation({0.0f, 0.0f});
     buttonTemplate->SetScale(0.0f);
 
@@ -49,7 +51,7 @@ void GamemodeScreen::CreateComponents() {
         gamemodeBtn->SetText(gamemode.GetName().c_str());
         AddComponent(gamemodeBtn);
 
-        gamemodeBtn->SetFont(sgg::HashGuid::StringIntern("MainMenuP22UndergroundSCHeavy"));
+        gamemodeBtn->SetFont(sgg::HashGuid::StringIntern("P22UndergroundSCMedium"));
         gamemodeBtn->SetTextColor(0xFFCCCCCC);
 
         offsetY += 75.0f;

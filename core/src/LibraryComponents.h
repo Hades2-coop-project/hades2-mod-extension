@@ -6,6 +6,8 @@
 #pragma once
 
 #include "hud/MainMenuHandler.h"
+#include "ContentPathSelector.h"
+
 #include <memory>
 
 class LibraryComponents {
@@ -16,8 +18,10 @@ class LibraryComponents {
     static LibraryComponents *Instance() noexcept { return instance.get(); }
 
     MainMenuHandler *GetMenuHandler() const noexcept { return mainMenuHandler.get(); };
+    ContentPathSelector &GetContentSelecter() noexcept { return *contentSelector.get(); }
 
   private:
     static std::unique_ptr<LibraryComponents> instance;
     std::unique_ptr<MainMenuHandler> mainMenuHandler;
+    std::unique_ptr<ContentPathSelector> contentSelector;
 };

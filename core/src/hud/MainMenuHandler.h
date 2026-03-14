@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "FunctionHook.h"
+#include "hooks/FunctionHook.h"
 #include <hades2/MainMenuScreen.h>
 
 class MainMenuHandler {
@@ -19,7 +19,7 @@ class MainMenuHandler {
 
 private:
     FunctionHook<"sgg::MainMenuScreen::MainMenuScreen", sgg::MainMenuScreen *, sgg::MainMenuScreen *, void *, void *>
-        funHook;
+      funHook{};
 
     sgg::MainMenuScreen *mainMenuScreen = nullptr;
 

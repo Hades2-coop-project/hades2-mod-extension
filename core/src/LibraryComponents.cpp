@@ -8,6 +8,9 @@
 
 std::unique_ptr<LibraryComponents> LibraryComponents::instance{};
 
-LibraryComponents::LibraryComponents() { mainMenuHandler = std::make_unique<MainMenuHandler>(); }
+LibraryComponents::LibraryComponents() { 
+	mainMenuHandler = std::make_unique<MainMenuHandler>();
+    contentSelector = std::make_unique<ContentPathSelector>();
+}
 
 void LibraryComponents::Initialize() { instance = std::make_unique<LibraryComponents>(); }

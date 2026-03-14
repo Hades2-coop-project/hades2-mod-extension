@@ -97,6 +97,27 @@ int ModRequire(lua_State *L) {
     return 1;
 }
 
+
+int GetScriptDir(lua_State *L) {
+    lua_Debug debugInfo{};
+
+    if (!lua_getstack(L, 1, &debugInfo) || !lua_getinfo(L, "S", &debugInfo))
+        return luaL_error(L, "Cannot get debug info");
+
+    const char *source = debugInfo.source;
+
+    if (source == nullptr || *source != '@')
+        return luaL_error(L, "Cannot get source path");
+
+    source++; // skip @
+
+    const fs::path scriptPath = getRequiredScriptPath(source, "");
+
+    lua_pushstring(L, scriptPath.generic_string().data());
+    return 1;
+}
+
 void ModLuaDefs::Load(lua_State *L) {
     lua_register(L, "ModRequire", ModRequire);
+    lua_register(L, "GetScriptDir", GetScriptDir);
 }

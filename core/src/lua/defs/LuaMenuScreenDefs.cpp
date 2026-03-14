@@ -19,6 +19,7 @@
 static int CreateMenuScreen(lua_State *L) {
     auto *sceenManager = LibraryComponents::Instance()->GetMenuHandler()->GetMainMenu()->GetScreenManager();
     auto *menu = HookedClassFactory::Create<HookedMenuScreen>(sceenManager);
+    menu->SetAllowDuplicates(true);
     sceenManager->AddScreen(menu);
 
     NewUserData<GuiMenuScreenUserData>(L, menu);
