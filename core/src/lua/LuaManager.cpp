@@ -5,9 +5,8 @@
 
 #include "pch.h"
 #include "LuaManager.h"
-#include "HooksSystem.h"
-#include "lua/ModLuaDefs.h"
-#include "lua/TempValuesLuaDefs.h"
+#include "lua/defs/ModLuaDefs.h"
+#include "lua/defs/TempValuesLuaDefs.h"
 #include "lua/defs/LuaGamemodeFunctionDefs.h"
 #include "lua/defs/LuaGUIComponentButtonFunctionDefs.h"
 #include "lua/defs/LuaGUIComponentFunctionDefs.h"

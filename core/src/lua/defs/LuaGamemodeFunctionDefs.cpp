@@ -44,13 +44,5 @@ void LuaGamemodeFunctionDefs::Load(lua_State* L) {
     REGISTER(MainMenuAPIGetSelectedGamemode);
     REGISTER(MainMenuAPIAddGamemode);
 
-    // Add default gamemode with default handler
-    luaL_dostring(L, R"(
-        MainMenuAPIAddGamemode("Default", function()
-            SetTempRuntimeData("Gamemode", nil)
-            MainMenuOpenProfiles()
-        end)
-    )");
-
     #undef REGISTER
 }

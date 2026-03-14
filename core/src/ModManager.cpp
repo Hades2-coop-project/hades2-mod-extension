@@ -8,7 +8,6 @@
 #include <filesystem>
 #include "ModManager.h"
 #include "HooksSystem.h"
-#include "lua/ModLuaDefs.h"
 #include "lua/LuaManager.h"
 #include "hooks/LocalizationHook.h"
 #include "GamemodeManager.h"

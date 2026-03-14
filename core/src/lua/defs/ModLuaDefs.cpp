@@ -9,7 +9,7 @@
 #include <filesystem>
 
 #include "HooksSystem.h"
-#include "LuaManager.h"
+#include "lua/LuaManager.h"
 #include "lua.hpp"
 #include <hades2/Assert.h>
 
