@@ -15,7 +15,7 @@ static std::vector<std::string> localizations{};
 
 static FunctionHook<"sgg::GameDataManager::ReadTextData", void> hook{};
 
-using ReadTextData_params_t = void(__fastcall *)(const char *filePath, void *textStorage, eastl::string *localization);
+using ReadTextData_params_t = void(__fastcall *)(void *textStorage, const char *filePath, eastl::string *localization);
 static ReadTextData_params_t ReadTextData{};
 
 static void *sTextData{};
@@ -38,7 +38,8 @@ void Hooks::LocalizationHook::Install(SymbolLoader &symLoader) {
         const char *cStrLang = Lang->c_str();
         eastl::string langStr{cStrLang};
         for (const auto &path : localizations) {
-            ReadTextData((path + "." + cStrLang + ".sjson").c_str(), sTextData, &langStr);
+            const std::string dataPath = path + "." + cStrLang + ".sjson";
+            ReadTextData(sTextData, dataPath.c_str(), &langStr);
         }
 
         LibraryComponents::Instance()->GetContentSelecter().SetPath(sgg::fs::ResourceDirectory::CALCULATES_TEXT,
