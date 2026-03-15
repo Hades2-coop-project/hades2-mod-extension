@@ -10,6 +10,7 @@ if(MSVC)
 endif()
 
 set(HADES_PLUGIN_DIR ${CMAKE_SOURCE_DIR}/bin)
+set(HADES_MOD_INSTALL_PATH ${CMAKE_SOURCE_DIR}/bin/TN_Core)
 
 # Load environment variables from env.cmake
 if (EXISTS ${CMAKE_SOURCE_DIR}/env.cmake)
@@ -29,4 +30,8 @@ add_subdirectory(core)
 install(TARGETS HadesModNativeExtension
         RUNTIME
         DESTINATION ${HADES_PLUGIN_DIR}
+)
+
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/core/resources/
+        DESTINATION ${HADES_MOD_INSTALL_PATH}
 )
