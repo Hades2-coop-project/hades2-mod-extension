@@ -25,8 +25,8 @@ void Hooks::LocalizationHook::Install(SymbolLoader &symLoader) {
     hook.Install(reinterpret_cast<void *>(symLoader.GetSymbolAddress("?ReadTextData@GameDataManager@sgg@@SAXXZ")), 16);
 
     ReadTextData = reinterpret_cast<ReadTextData_params_t>(symLoader.GetSymbolAddress(
-        "?ReadTextData@GameDataManager@sgg@@SAXPEBDAEAV?$string_hash_map@PEAVTextData@sgg@@U?$hash@PEBD@eastl@@U?$str_"
-        "equal_to@PEBD@4@Vallocator_forge@4@@eastl@@AEBV?$basic_string@DVallocator_forge@eastl@@@4@@Z"));
+        "?Read@TextData@sgg@@SA_NAEAV?$string_hash_map@PEAVTextData@sgg@@U?$hash@PEBD@eastl@@U"
+        "?$str_equal_to@PEBD@4@Vallocator_forge@4@@eastl@@PEBDAEBV?$basic_string@DVallocator_forge@eastl@@@4@@Z"));
 
     sTextData = reinterpret_cast<void *>(symLoader.GetSymbolAddress("sgg::GameDataManager::sTextData"));
     Lang = reinterpret_cast<sgg::HashGuid *>(symLoader.GetSymbolAddress("sgg::Localization::Lang"));
