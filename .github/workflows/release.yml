@@ -4,12 +4,10 @@ on:
   push:
     tags:
       - 'v*' # Triggers on tags starting with 'v', like v1.0.0
-    paths:
-      - '.github/RELEASE'
 
 jobs:
   build:
-    name: Build and Release
+    name: Build
     runs-on: windows-latest
 
     steps:
@@ -28,9 +26,25 @@ jobs:
         run: |
           Compress-Archive -Path bin/* -DestinationPath ./Release.zip
 
-      - name: Create Release
-        uses: softprops/action-gh-release@v2
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
         with:
-          files: Release.zip
+          name: Release.zip
+          path: ./Release.zip
+
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2.5.3
+        with:
+          files: "**/Release.zip"
+          tag_name: ${{ github.ref_name }}
+          body: "Automated release of ${{ github.ref_name }}."
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
