@@ -1,0 +1,34 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*' # Triggers on tags starting with 'v', like v1.0.0
+    paths:
+      - '.github/RELEASE'
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compile with MSVC for Windows
+        run: |
+          cmake -A x64 . -B build_msvc -DCMAKE_POLICY_VERSION_MINIMUM=3.20
+          cmake --build build_msvc --target install --config Release
+
+      - name: Archive build artifacts
+        shell: pwsh
+        run: |
+          Compress-Archive -Path bin/* -DestinationPath ./Release.zip
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: Release.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
