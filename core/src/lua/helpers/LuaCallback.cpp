@@ -19,7 +19,7 @@ LuaCallback::LuaCallback(lua_State *L, int stackIndex) {
     int nextIndex = lua_rawlen(L, -1) + 1;
 
     // Push the value at stackIndex onto the callback storage table
-    lua_pushvalue(L, stackIndex);
+    HookedLua::lua_pushvalue(L, stackIndex);
     HookedLua::lua_rawseti(L, -2, nextIndex);
 
     // Save the index for later use

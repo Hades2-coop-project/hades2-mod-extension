@@ -60,19 +60,22 @@ int ModRequire(lua_State *L) {
     if (relativePathAsString.starts_with(".."))
         return luaL_error(L, "Cannot go outside of the game folder");
 
-    lua_settop(L, 1); 
-    luaL_getsubtable(L, LUA_REGISTRYINDEX, "_LOADED_SUBMODULES");
-    lua_getfield(L, 2, relativePathAsString.c_str());
+    lua_settop(L, 1);
+    HookedLua::luaL_getsubtable(L, LUA_REGISTRYINDEX, "_LOADED_SUBMODULES");
+    HookedLua::lua_getfield(L, 2, relativePathAsString.c_str());
 
     if (lua_toboolean(L, -1))
         return 1; // Package was loaded
 
     lua_pop(L, 1); /* remove 'getfield' result */
 
-    bool fileLoadStatus = LuaManager::LoadScriptFile(fs::current_path().parent_path() / scriptPath);
+    const fs::path scriptFilePath = LuaManager::GetAbsoluteScriptPath(scriptPath);
+    bool fileLoadStatus = LuaManager::LoadScriptFile(scriptFilePath);
 
-    if (!fileLoadStatus)
+    if (!fileLoadStatus) {
+        sgg::HandleAssert("Error loading module", scriptFilePath.string().c_str(), source, debugInfo.currentline, source);
         return luaL_error(L, "Cannot load file: %s", scriptPath.string().c_str());
+    }
 
     int runStatus = HookedLua::lua_pcallk(L, 0, 2, 0, 0, 0);
 
@@ -85,12 +88,12 @@ int ModRequire(lua_State *L) {
     lua_pop(L, 1); // remove error message from stack
 
     if (!lua_isnil(L, -1))        /* non-nil return? */
-        lua_setfield(L, 2, relativePathAsString.c_str()); /* _LOADED[name] = returned value */
-    lua_getfield(L, 2, relativePathAsString.c_str());
+        HookedLua::lua_setfield(L, 2, relativePathAsString.c_str()); /* _LOADED[name] = returned value */
+    HookedLua::lua_getfield(L, 2, relativePathAsString.c_str());
     if (lua_isnil(L, -1)) {       /* module did not set a value? */
         lua_pushboolean(L, 1);    /* use true as result */
-        lua_pushvalue(L, -1);     /* extra copy to be returned */
-        lua_setfield(L, 2, relativePathAsString.c_str()); /* _LOADED[name] = true */
+        HookedLua::lua_pushvalue(L, -1);     /* extra copy to be returned */
+        HookedLua::lua_setfield(L, 2, relativePathAsString.c_str()); /* _LOADED[name] = true */
     }
 
     return 1;

@@ -15,4 +15,7 @@ class LuaManager {
     static void Reinit();
     static bool DoScriptFile(const std::filesystem::path &path);
     static bool LoadScriptFile(const std::filesystem::path &path);
+    static std::filesystem::path GetAbsoluteScriptPath(const std::filesystem::path &path);
+  private:
+    static void InitScriptPath();
 };

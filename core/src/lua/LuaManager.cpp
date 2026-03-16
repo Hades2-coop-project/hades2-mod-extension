@@ -22,9 +22,10 @@
 
 namespace fs = std::filesystem;
 
-const static fs::path gamePath = fs::current_path().parent_path().parent_path();
+static fs::path luaModsPath = "";
 
 void LuaManager::Reinit() {
+    LuaManager::InitScriptPath();
     lua_State *luaState = HookedLua::GetLuaState();
     ModLuaDefs::Load(luaState);
     TempValuesLuaDefs::Load(luaState);
@@ -34,6 +35,16 @@ void LuaManager::Reinit() {
     LuaGUIComponentTextBoxFunctionDefs::Load(luaState);
     LuaMainMenuScreenFunctionDefs::Load(luaState);
     LuaMenuScreenFunctionDefs::Load(luaState);
+}
+
+void LuaManager::InitScriptPath() {
+    if (luaModsPath.empty()) {
+        if (fs::exists("Hades2.exe")) {
+            luaModsPath = fs::current_path().parent_path();
+        } else {
+            luaModsPath = fs::current_path();
+        }
+    }
 }
 
 bool LuaManager::DoScriptFile(const std::filesystem::path &path) {
@@ -54,9 +65,13 @@ bool LuaManager::LoadScriptFile(const std::filesystem::path &path) {
     file.read(buffer.data(), buffer.size());
     file.close();
 
-    auto luaName = "@" + path.lexically_relative(gamePath).lexically_normal().string();
+    auto luaName = "@" + path.lexically_relative(luaModsPath).lexically_normal().string();
 
     int fileLoadStatus = HookedLua::luaL_loadbufferx(HookedLua::GetLuaState(), buffer.data(), buffer.size(), luaName.c_str(), nullptr);
 
     return fileLoadStatus == LUA_OK;
+}
+
+std::filesystem::path LuaManager::GetAbsoluteScriptPath(const std::filesystem::path &path) {
+    return luaModsPath / path;
 }
