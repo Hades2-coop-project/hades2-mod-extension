@@ -81,7 +81,7 @@ int ModRequire(lua_State *L) {
 
     if (runStatus != LUA_OK) {
         const char *message = lua_tostring(L, -1);
-        sgg::HandleAssert("Error loading module", message, source, debugInfo.currentline, source);
+        sgg::HandleAssert("Error running module", message, source, debugInfo.currentline, source);
         return 0;
     }
 
