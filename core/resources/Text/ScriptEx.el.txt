@@ -1,0 +1,10 @@
+{
+  lang = "el"
+  Texts =
+  [
+  	{
+      Id = "MainMenuAPI_SelectGamemode"
+      DisplayName = "Επιλογή λειτουργίας"
+    }
+  ]
+}

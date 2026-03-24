@@ -1,0 +1,10 @@
+{
+  lang = "uk"
+  Texts =
+  [
+  	{
+      Id = "MainMenuAPI_SelectGamemode"
+      DisplayName = "Обрати режим гри"
+    }
+  ]
+}
