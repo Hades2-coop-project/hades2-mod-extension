@@ -42,7 +42,6 @@ void MainMenuHandler::InitializeCustomButtons() {
     mainMenuScreen->MoveComponentComponentBack(gamemodeBtn, 20);
 
     gamemodeBtn->SetFont(sgg::HashGuid::StringIntern("MainMenuP22UndergroundSCHeavy"));
-    gamemodeBtn->SetTextColor(0xFFCCCCCC);
     gamemodeBtn->SetFadeOpacity(0.0f);
     gamemodeBtn->SetFadeTarget(1.0f);
     gamemodeBtn->SetFadeDelay(1.60f);
