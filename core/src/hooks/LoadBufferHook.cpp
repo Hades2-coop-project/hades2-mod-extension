@@ -37,7 +37,7 @@ static void Path(void* pos) {
 // And returns the first argument position
 static void *SearchPathPos(SymbolLoader &symLoader, uintptr_t luaL_loadbufferxPos) {
     // This is lenght of the sgg::ScriptManager::Load function
-    constexpr uint64_t searchSize = 0x85E;
+    constexpr uint64_t searchSize = 0xCEF;
     constexpr uint8_t CALL_BYTE = 0xE8;
     constexpr uint8_t FIRST_ARGUMENT_OFFSET = 7;
     // We have Lua::DoBytes in the debug version, and "sgg::ScriptManager::Load in the release
