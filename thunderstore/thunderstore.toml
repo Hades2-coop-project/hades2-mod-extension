@@ -4,7 +4,7 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "TheNormalnijMods"
 name = "Hades2ModExtension"
-versionNumber = "0.1.6"
+versionNumber = "0.2.0"
 description = "Lua API extension"
 websiteUrl = "https://github.com/Hades2-coop-project/hades2-mod-extension"
 containsNsfwContent = false
