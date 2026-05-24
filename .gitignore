@@ -4,3 +4,6 @@ build
 out
 CMakeLists.txt.*
 env.cmake
+
+thunderstore/build
+thunderstore/*.zip

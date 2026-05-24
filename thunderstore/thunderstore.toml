@@ -1,0 +1,28 @@
+[config]
+schemaVersion = "0.0.1"
+
+[package]
+namespace = "TheNormalnijMods"
+name = "Hades2ModExtension"
+versionNumber = "0.1.6"
+description = "Lua API extension"
+websiteUrl = "https://github.com/Hades2-coop-project/hades2-mod-extension"
+containsNsfwContent = false
+
+[package.dependencies]
+# ASI loader
+Hell2Modding-Hell2Modding = "1.0.103"
+
+[build]
+icon = "./icon.png"
+readme = "../README.md"
+outdir = "./build"
+
+[[build.copy]]
+source = "../bin/HadesModNativeExtension.asi"
+target = "./HadesModNativeExtension.asi"
+
+[publish]
+repository = "https://thunderstore.io"
+communities = ["hades-ii"]
+categories = ["libraries"]
