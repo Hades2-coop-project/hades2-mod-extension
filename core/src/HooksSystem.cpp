@@ -23,10 +23,10 @@ HooksSystem::HooksSystem() {
     if (!m_symLoader.Initialize()) {
         throw std::exception("Cannot initialize symbol loader");
     }
-    
-    m_GameMainHandle = GetModuleHandleA("..\\Hades2.exe");
 
-    if (!m_symLoader.LoadModuleSymbols(m_GameMainHandle, "..\\Hades2.exe")) {
+    m_GameMainHandle = GetModuleHandle("Hades2.exe");
+
+    if (!m_symLoader.LoadModuleSymbols(m_GameMainHandle, "Hades2.exe")) {
         throw std::exception("Cannot load Hades2.exe symbols");
     }
 
