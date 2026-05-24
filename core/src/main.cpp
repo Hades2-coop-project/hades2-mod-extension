@@ -11,24 +11,39 @@
 #include "HooksSystem.h"
 #include <iostream>
 
-void UseHadesExeCWD() {
-    wchar_t path[MAX_PATH];
-    GetModuleFileNameW(NULL, path, MAX_PATH);
-    std::filesystem::path h2ExePath{path};
+using path = std::filesystem::path;
+
+path UseHadesExeCWD() {
+    wchar_t modulePath[MAX_PATH];
+    GetModuleFileNameW(NULL, modulePath, MAX_PATH);
+    path h2ExePath{modulePath};
     auto h2ExeDirPath = h2ExePath.parent_path();
-    std::cout << h2ExeDirPath << std::endl;
     SetCurrentDirectoryW(h2ExeDirPath.generic_wstring().c_str());
+    return h2ExeDirPath;
 }
 
 static BOOL APIENTRY DllMain(HMODULE hinstDLL, DWORD fdwReason, LPVOID lpvReserved) {
     switch (fdwReason) {
     case DLL_PROCESS_ATTACH: {
         try {
-            UseHadesExeCWD();
+            // The library is loaded from ASI loader
+            // So CWD is this library folder
+            auto libraryDir = std::filesystem::current_path();
+
+            // It's safe to change CWD at this moment
+            const path gameExePath = UseHadesExeCWD();
+
             HooksSystem::Instance();
             HookedMenuScreen::VTBL.Initialize();
             LibraryComponents::Initialize();
-            ModManager::Instance()->Init();
+
+            auto modManager = ModManager::Instance();
+
+            modManager->AddSearchPath(gameExePath.parent_path() / "Content" / "Mods");
+            if (libraryDir.generic_string().ends_with("TheNormalnijMods-Hades2ModExtension")) {
+                modManager->AddSearchPath(libraryDir.parent_path());
+            }
+            modManager->Init();
         } catch (std::exception &ex) {
              std::cout << "Cannot load Hades2ModExtension: " << ex.what();
         }
