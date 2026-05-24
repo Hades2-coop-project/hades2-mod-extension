@@ -22,6 +22,10 @@ outdir = "./build"
 source = "../bin/HadesModNativeExtension.asi"
 target = "./HadesModNativeExtension.asi"
 
+[[build.copy]]
+source = "../bin/TN_Core"
+target = "./"
+
 [publish]
 repository = "https://thunderstore.io"
 communities = ["hades-ii"]
