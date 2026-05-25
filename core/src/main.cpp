@@ -42,6 +42,9 @@ static BOOL APIENTRY DllMain(HMODULE hinstDLL, DWORD fdwReason, LPVOID lpvReserv
             modManager->AddSearchPath(gameExePath.parent_path() / "Content" / "Mods");
             if (libraryDir.generic_string().ends_with("TheNormalnijMods-Hades2ModExtension")) {
                 modManager->AddSearchPath(libraryDir.parent_path());
+                modManager->SetCoreModContentPath(libraryDir);
+            } else {
+                modManager->SetCoreModContentPath(path{"../Mods/TN_Core"});
             }
             modManager->Init();
         } catch (std::exception &ex) {

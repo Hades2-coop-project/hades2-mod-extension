@@ -13,9 +13,12 @@ class ContentPathSelector {
   public:
     ContentPathSelector() { m_OriginalDirs.resize(MAX_PATHS); }
 
+    void SetPathAbsolute(sgg::fs::ResourceDirectory dirType, const char *path);
     void SetPath(sgg::fs::ResourceDirectory dirType, const char *path);
     void ResetPath(sgg::fs::ResourceDirectory dirType);
+  private:
+    void BackupOriginalPath(sgg::fs::ResourceDirectory dirType);
 
-private:
+  private:
     std::vector<std::string> m_OriginalDirs{};
 };

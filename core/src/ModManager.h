@@ -11,10 +11,14 @@
 
 class ModManager {
   public:
-    void AddSearchPath(std::filesystem::path path) { m_modSearchPaths.emplace_back(std::move(path)); }
+    void AddSearchPath(std::filesystem::path path) { m_ModSearchPaths.emplace_back(std::move(path)); }
+    void SetCoreModContentPath(const std::filesystem::path &path) { m_CoreContentPath = path.string(); }
+    const std::string& GetThisModResourcesDir() const noexcept { return m_CoreContentPath; }
 
     void Init();
     void Deinit();
+    Mod& GetModByName(const char* name) const noexcept;
+    Mod& GetThisCoreMod() const noexcept;
 
     static ModManager *Instance();
 
@@ -25,6 +29,7 @@ class ModManager {
     void SortMods();
 
   private:
-    std::vector<std::filesystem::path> m_modSearchPaths;
+    std::vector<std::filesystem::path> m_ModSearchPaths;
     std::vector<std::unique_ptr<Mod>> m_Mods;
+    std::string m_CoreContentPath;
 };

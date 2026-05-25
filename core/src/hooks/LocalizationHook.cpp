@@ -11,7 +11,7 @@
 #include <EASTL-forge1.51/string.h>
 #include <hades2/HashGuid.h>
 
-static std::vector<std::string> localizations{};
+static std::unordered_map<std::string, std::vector<std::string>> localizations;
 
 static FunctionHook<"sgg::GameDataManager::ReadTextData", void> hook{};
 
@@ -32,14 +32,16 @@ void Hooks::LocalizationHook::Install(SymbolLoader &symLoader) {
     Lang = reinterpret_cast<sgg::HashGuid *>(symLoader.GetSymbolAddress("sgg::Localization::Lang"));
 
     hook.onPostFunction = []() {
-        LibraryComponents::Instance()->GetContentSelecter().SetPath(sgg::fs::ResourceDirectory::CALCULATES_TEXT,
-                                                                    "../Content/Mods");
-
         const char *cStrLang = Lang->c_str();
         eastl::string langStr{cStrLang};
-        for (const auto &path : localizations) {
-            const std::string dataPath = path + "." + cStrLang + ".sjson";
-            ReadTextData(sTextData, dataPath.c_str(), &langStr);
+
+
+        for (const auto &data : localizations) {
+            LibraryComponents::Instance()->GetContentSelecter().SetPathAbsolute(sgg::fs::ResourceDirectory::CALCULATES_TEXT, data.first.c_str());
+            for (const auto &path : data.second) {
+                const std::string dataPath = path + "." + cStrLang + ".sjson";
+                ReadTextData(sTextData, dataPath.c_str(), &langStr);
+            }
         }
 
         LibraryComponents::Instance()->GetContentSelecter().SetPath(sgg::fs::ResourceDirectory::CALCULATES_TEXT,
@@ -47,4 +49,11 @@ void Hooks::LocalizationHook::Install(SymbolLoader &symLoader) {
     };
 }
 
-void Hooks::LocalizationHook::AddLocalizationPath(std::string path) { localizations.push_back(path); }
+void Hooks::LocalizationHook::AddLocalizationPath(std::string_view rootPath, std::string_view path) {
+    auto currrentStorage = localizations.find(std::string(rootPath));
+    if (currrentStorage == localizations.end()) {
+        localizations.emplace(std::pair{std::string(rootPath), std::vector<std::string>(1, std::string(path))});
+    } else {
+        currrentStorage->second.emplace_back(path);
+    }
+}

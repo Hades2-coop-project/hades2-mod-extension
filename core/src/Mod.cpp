@@ -26,12 +26,13 @@ bool Mod::Load() {
     if (!parser.Parse(buffer.data(), buffer.size()))
         return false;
 
-    m_modName = std::move(parser.name);
+    m_modName = m_modPath.parent_path().filename().string();
+    m_modFriendlyName = std::move(parser.name);
     m_libName = std::move(parser.libName);
     m_priority = parser.priority;
     m_localizations.swap(parser.localizations);
 
-    if (m_modName.empty())
+    if (m_modFriendlyName.empty())
         return false;
 
     return true;

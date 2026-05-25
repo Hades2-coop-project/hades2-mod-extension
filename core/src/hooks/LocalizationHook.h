@@ -9,5 +9,5 @@
 
 namespace Hooks::LocalizationHook {
 void Install(SymbolLoader &symLoader);
-void AddLocalizationPath(std::string path);
+void AddLocalizationPath(std::string_view rootPath, std::string_view path);
 }

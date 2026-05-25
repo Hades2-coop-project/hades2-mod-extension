@@ -39,7 +39,7 @@ void ModManager::OnLuaCreated() {
 }
 
 void ModManager::ScanMods() {
-    for (const auto& searchPath : m_modSearchPaths) {
+    for (const auto& searchPath : m_ModSearchPaths) {
         LoadModInFolder(searchPath);
     }
     SortMods();
@@ -49,10 +49,11 @@ void ModManager::ScanMods() {
     }
 }
 
-void ModManager::LoadModInFolder(const std::filesystem::path &modPath) {
+void ModManager::LoadModInFolder(const std::filesystem::path &modsPath) {
     namespace fs = std::filesystem;
 
-    for (auto &modDir : fs::directory_iterator(modPath)) {
+    const auto modsPathAsString = modsPath.string();
+    for (auto &modDir : fs::directory_iterator(modsPath)) {
         if (!fs::is_directory(modDir))
             continue;
 
@@ -61,12 +62,11 @@ void ModManager::LoadModInFolder(const std::filesystem::path &modPath) {
         if (mod->Load()) {
             for (const auto &localPath : mod->GetLocalization()) {
                 const fs::path fullPath = modDir.path().filename() / localPath;
-                Hooks::LocalizationHook::AddLocalizationPath(std::move(fullPath.string()));
+                Hooks::LocalizationHook::AddLocalizationPath(modsPathAsString, std::move(fullPath.string()));
             }
             m_Mods.emplace_back(std::move(mod));
         }
     }
-
 }
 
 void ModManager::SortMods() {

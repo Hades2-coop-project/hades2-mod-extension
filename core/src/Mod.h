@@ -32,6 +32,7 @@ class Mod {
     bool Start();
     bool Stop();
 
+    const std::string& GetName() const noexcept { return m_modName; }
     int64_t GetPriority() const noexcept { return m_priority; };
     auto &GetLocalization() const noexcept { return m_localizations; };
 
@@ -42,8 +43,9 @@ class Mod {
     bool m_hasLib{};
     bool m_libInited{};
     bool m_enabled{};
+    std::string m_modName;
     std::filesystem::path m_modPath;
-    std::string m_modName{};
+    std::string m_modFriendlyName{};
     std::string m_libName{};
     bool m_luaInit{};
     int64_t m_priority{};
