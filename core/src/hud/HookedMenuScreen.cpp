@@ -38,12 +38,12 @@ void HookedMenuScreen::HookedMenuScreenVtbl::Initialize(const HookedMenuScreenVt
     }
 }
 
-void HookedMenuScreen::LoadFromMod(const char *path) {
+void HookedMenuScreen::LoadFromMod(const char* root, const char *path) {
     if (this->mLoadDefaultComponents)
         GetScreenData().ReadXml(this, "GUI/MenuScreen.sjson");
 
-    LibraryComponents::Instance()->GetContentSelecter().SetPath(sgg::fs::ResourceDirectory::RD_MIDDLEWARE_1,
-                                                                "../Content/Mods");
+    LibraryComponents::Instance()->GetContentSelecter().SetPathAbsolute(sgg::fs::ResourceDirectory::RD_MIDDLEWARE_1,
+                                                               root);
     GetScreenData().ReadXml(this, path);
 
     LibraryComponents::Instance()->GetContentSelecter().SetPath(sgg::fs::ResourceDirectory::RD_MIDDLEWARE_1,

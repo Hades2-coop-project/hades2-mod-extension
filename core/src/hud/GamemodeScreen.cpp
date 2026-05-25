@@ -10,6 +10,7 @@
 #include "HookTable.h"
 #include "GamemodeManager.h"
 #include "HookedClassFactory.h"
+#include "ModManager.h"
 
 // TODO: Move this to Lua
 
@@ -34,7 +35,8 @@ void GamemodeScreen::CreateComponents() {
     AddComponent(buttonTemplate);
     GetReflectionHelper().ReflectComponent("mButtonTemplate", buttonTemplate);
 
-    LoadFromMod("TN_Core/GamemodeScreen.sjson");
+
+    LoadFromMod(ModManager::Instance()->GetThisModResourcesDir().c_str(), "GamemodeScreen.sjson");
     
     //Load("GUI/PauseScreen.sjson");
     buttonTemplate->SetLocation({0.0f, 0.0f});

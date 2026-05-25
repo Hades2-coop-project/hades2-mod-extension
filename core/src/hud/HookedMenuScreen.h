@@ -52,7 +52,7 @@ class HookedMenuScreen : public sgg::MenuScreen {
     };
 
     // Custom loader fixes issues with paths
-    void LoadFromMod(const char *path);
+    void LoadFromMod(const char* root, const char *path);
 
   protected:
     void SetVTBL(HookedMenuScreenVtbl *vtbl) { *reinterpret_cast<HookedMenuScreenVtbl **>(this) = vtbl; }
