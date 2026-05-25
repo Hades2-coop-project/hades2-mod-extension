@@ -57,8 +57,8 @@ int ModRequire(lua_State *L) {
     const fs::path scriptPath = getRequiredScriptPath(source, scriptRelativePath);
     auto relativePathAsString = (scriptPath.lexically_normal()).string();
 
-    if (relativePathAsString.starts_with(".."))
-        return luaL_error(L, "Cannot go outside of the game folder");
+    // if (relativePathAsString.starts_with(".."))
+    //     return luaL_error(L, "Cannot go outside of the game folder");
 
     lua_settop(L, 1);
     HookedLua::luaL_getsubtable(L, LUA_REGISTRYINDEX, "_LOADED_SUBMODULES");
